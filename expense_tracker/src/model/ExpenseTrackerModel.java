@@ -30,4 +30,8 @@ public class ExpenseTrackerModel {
     return Collections.unmodifiableList(new ArrayList<>(transactions));
   }
 
+  public void clearTransactions() {
+        transactions.clear();
+    }
+
 }

@@ -19,6 +19,7 @@ import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.After;
 
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
@@ -39,6 +40,15 @@ public class TestExample {
         model = new ExpenseTrackerModel();
         view = new ExpenseTrackerView();
         controller = new ExpenseTrackerController(model, view);
+    }
+
+    @After
+    public void cleanup() {
+        model.clearTransactions();
+        view.refreshTable(model.getTransactions()); 
+        model = null;
+        view = null;
+        controller = null;
     }
 
     public double getTotalCost() {
