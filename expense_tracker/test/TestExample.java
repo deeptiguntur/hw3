@@ -137,9 +137,9 @@ public class TestExample {
   }
 
   @Test
-  public void testAddTransaction() {
-    // Existing test method
-  }
+  public void testUndoAllowed() {
+    // Pre-condition: List of transactions is empty
+    assertEquals(0, model.getTransactions().size());
 
     // Perform the action: Add a transaction
     double amount = 50.0;
