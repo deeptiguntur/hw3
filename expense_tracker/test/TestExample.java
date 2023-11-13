@@ -278,6 +278,9 @@ public class TestExample {
     List<Transaction> transactions = model.getTransactions();
     assertEquals(0, transactions.size());
 
+    // Check transaction table has only last total cost row after undo
+    assertEquals(1, view.getTransactionsTable().getRowCount());
+
     // Check the total cost after undoing the addition
     double totalCost = getTotalCost();
     assertEquals(0.00, totalCost, 0.01);
