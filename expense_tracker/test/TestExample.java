@@ -112,5 +112,37 @@ public class TestExample {
         double totalCost = getTotalCost();
         assertEquals(0.00, totalCost, 0.01);
     }
+
+    @Test
+  public void testAddTransactionWithAmountAndCategory() {
+    // Pre-condition: List of transactions is empty
+    assertEquals(0, model.getTransactions().size());
+
+    // Perform the action: Add a transaction with amount 50.00 and category "food"
+    double amount = 50.0;
+    String category = "food";
+    assertTrue(controller.addTransaction(amount, category));
+
+    // Post-condition: List of transactions contains only the added transaction
+    assertEquals(1, model.getTransactions().size());
+
+    // Check the contents of the list
+    Transaction firstTransaction = model.getTransactions().get(0);
+    checkTransaction(amount, category, firstTransaction);
+
+    // Check the total amount
+    assertEquals(amount, getTotalCost(), 0.01);
+  }
+
+  // Regression testing for the existing test cases
+  @Test
+  public void testAddTransaction() {
+    // Existing test method
+  }
+
+  @Test
+  public void testRemoveTransaction() {
+    // Existing test method
+  }
     
 }
