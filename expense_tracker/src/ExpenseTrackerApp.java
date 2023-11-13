@@ -73,11 +73,7 @@ public class ExpenseTrackerApp {
         int undoRowIndex = view.undoRow();
         controller.undoTransaction(undoRowIndex);
       }catch(IllegalArgumentException exception) {
-        if (exception.getMessage() == null) {
-          JOptionPane.showMessageDialog(view,"Cannot undo, no row is selected");
-        } else {
-          JOptionPane.showMessageDialog(view,exception.getMessage());
-        }
+        JOptionPane.showMessageDialog(view,exception.getMessage());
         view.toFront();
       }
   });

@@ -225,7 +225,7 @@ public boolean hasErrorMessage() {
       }
       return undoRowIndex;
     }
-    throw new IllegalArgumentException();
+    throw new IllegalArgumentException("Cannot undo, no row is selected");
 
   }
 
