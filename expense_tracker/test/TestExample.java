@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 import java.util.Date;
@@ -285,6 +287,68 @@ public class TestExample {
     double totalCost = getTotalCost();
     assertEquals(0.00, totalCost, 0.01);
   }
+
+  @Test
+  public void testUndoDisallowed() {
+        // Pre-condition: List of transactions is empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Attempt to undo when the transactions list is empty
+        int lastIndex = model.getTransactions().size() - 1;
+        //controller.undoTransaction(lastIndex);
+
+        // Post-condition: List of transactions is still empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Additional check: Ensure that the UI widget is disabled or an error code is returned
+        
+        //assertFalse(view.getUndoButton().isEnabled()); // Adjust this based on your implementation
+
+        try {
+        controller.undoTransaction(lastIndex);
+        fail("Expected an exception when attempting to undo an empty list");
+        } catch (Exception e) {
+        // Handle the exception, or assert its type/message if necessary
+        assertTrue(e instanceof Exception);
+        assertEquals("Expected error message", e.getMessage());
+        }
+
+
+  }
+
+  @Test
+  public void testAddTransactionWithInvalidInput() {
+        // Pre-condition: List of transactions is empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Attempt to add a transaction with an invalid amount or category
+        double invalidAmount = -50.0;  // Example of an invalid amount
+        String invalidCategory = "";   // Example of an invalid category
+        assertFalse(controller.addTransaction(invalidAmount, invalidCategory));
+
+        // Post-condition: List of transactions remains empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Post-condition: Total Cost remains unchanged
+        assertEquals(0.0, getTotCost(), 0.01);
+
+        // Additional check: Ensure that error messages are displayed
+        // Adjust this based on your actual implementation
+        assertTrue(view.hasErrorMessage());  // Modify this method based on your view implementation
+      }
+
+      private double getTotCost() {
+        double totalCost = 0.0;
+        if (!model.getTransactions().isEmpty()) {
+        for (Transaction transaction : model.getTransactions()) {
+            totalCost += transaction.getAmount();
+        }
+        }
+        return totalCost;
+      }
+
+    
+    
 
 
     
