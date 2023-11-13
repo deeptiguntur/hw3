@@ -28,6 +28,7 @@ public class ExpenseTrackerView extends JFrame {
   private JButton amountFilterBtn;
 
   private JButton undoButton;
+  private boolean hasErrorMessage = false;
 
 
   
@@ -135,6 +136,10 @@ public class ExpenseTrackerView extends JFrame {
     return JOptionPane.showInputDialog(this, "Enter Category Filter:");
 }
 
+public boolean hasErrorMessage() {
+        return hasErrorMessage;
+  }
+
 
   public void addApplyAmountFilterListener(ActionListener listener) {
     amountFilterBtn.addActionListener(listener);
@@ -204,6 +209,11 @@ public class ExpenseTrackerView extends JFrame {
 
       transactionsTable.repaint();
   }
+
+  public void displayErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        hasErrorMessage = true;
+    }
 
   public int undoRow() {
     if (transactionsTable.getSelectedRowCount() > 0) {

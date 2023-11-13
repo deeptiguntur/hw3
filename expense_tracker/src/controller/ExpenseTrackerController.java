@@ -76,8 +76,14 @@ public class ExpenseTrackerController {
   public void undoTransaction(int index) {
     List<Transaction> transactions = model.getTransactions();
     Transaction transaction = transactions.get(index);
+    if (!transactions.isEmpty()) {
     model.removeTransaction(transaction);
     view.getTableModel().removeRow(index);
     refresh();
-  }
+    }
+    else{
+      // Handle the case when there are no transactions (perhaps display a message)
+        System.out.println("Cannot undo. No transactions available.");
+    }
+}
 }
