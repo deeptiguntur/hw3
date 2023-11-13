@@ -72,4 +72,12 @@ public class ExpenseTrackerController {
       view.toFront();}
 
   }
+
+  public void undoTransaction(int index) {
+    List<Transaction> transactions = model.getTransactions();
+    Transaction transaction = transactions.get(index);
+    model.removeTransaction(transaction);
+    view.getTableModel().removeRow(index);
+    refresh();
+  }
 }

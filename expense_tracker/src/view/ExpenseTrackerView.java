@@ -27,6 +27,9 @@ public class ExpenseTrackerView extends JFrame {
   private JTextField amountFilterField;
   private JButton amountFilterBtn;
 
+  private JButton undoButton;
+
+
   
 
   public ExpenseTrackerView() {
@@ -61,7 +64,9 @@ public class ExpenseTrackerView extends JFrame {
     JLabel amountFilterLabel = new JLabel("Filter by Amount:");
     amountFilterField = new JTextField(10);
     amountFilterBtn = new JButton("Filter by Amount");
-  
+
+    undoButton = new JButton("Undo");
+
 
   
     // Layout components
@@ -73,8 +78,10 @@ public class ExpenseTrackerView extends JFrame {
     inputPanel.add(addTransactionBtn);
 
     JPanel buttonPanel = new JPanel();
+    buttonPanel.add(undoButton);
     buttonPanel.add(amountFilterBtn);
     buttonPanel.add(categoryFilterBtn);
+
   
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -131,6 +138,10 @@ public class ExpenseTrackerView extends JFrame {
 
   public void addApplyAmountFilterListener(ActionListener listener) {
     amountFilterBtn.addActionListener(listener);
+  }
+
+  public void undoListener(ActionListener listener) {
+    undoButton.addActionListener(listener);
   }
 
   public double getAmountFilterInput() {
@@ -192,6 +203,20 @@ public class ExpenseTrackerView extends JFrame {
       });
 
       transactionsTable.repaint();
+  }
+
+  public int undoRow() {
+    if (transactionsTable.getSelectedRowCount() > 0) {
+      int undoRowIndex = transactionsTable.getSelectedRow();
+      if (undoRowIndex == transactionsTable.getRowCount()-1) {
+        throw new IllegalArgumentException("Last row cannot be removed");
+      } else if (transactionsTable.getSelectedRowCount() > 1) {
+        throw new IllegalArgumentException("Select only 1 row");
+      }
+      return undoRowIndex;
+    }
+    throw new IllegalArgumentException();
+
   }
 
 
