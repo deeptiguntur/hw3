@@ -3,6 +3,8 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 
 import java.util.Date;
 import java.util.List;
@@ -181,21 +183,6 @@ public class TestExample {
         checkTransaction(model.getTransactions().get(0).getAmount(), model.getTransactions().get(0).getCategory(), filteredTransactions.get(0));
         checkTransaction(model.getTransactions().get(4).getAmount(), model.getTransactions().get(4).getCategory(), filteredTransactions.get(1));
 
-        // view.getTransactionsTable().setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-        //     @Override
-        //     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        //         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-        //         if (row == 0 || row == 4) {
-        //             Color color =  c.getBackground();
-        //             System.out.println(color);
-        //         }
-
-        //         return c;
-        //     }
-
-        // });
-
         Color green = new Color(173, 255, 168);
 
         TableCellRenderer renderer1 = view.getTransactionsTable().getCellRenderer(0, 0);
@@ -265,4 +252,37 @@ public class TestExample {
         assertEquals(c2.getBackground().getRGB(), green.getRGB());
     }
 
+  @Test
+  public void testUndoAllowed() {
+    // Pre-condition: List of transactions is empty
+    assertEquals(0, model.getTransactions().size());
+
+    // Perform the action: Add a transaction
+    double amount = 50.0;
+    String category = "food";
+    assertTrue(controller.addTransaction(amount, category));
+
+    // Post-condition: List of transactions contains the added transaction
+    assertEquals(1, model.getTransactions().size());
+    Transaction addedTransaction = model.getTransactions().get(0);
+    checkTransaction(amount, category, addedTransaction);
+
+    // Check the total amount
+    assertEquals(amount, getTotalCost(), 0.01);
+
+    // Perform the action: Undo the addition
+    int lastIndex = model.getTransactions().size() - 1;
+    controller.undoTransaction(lastIndex);
+
+    // Post-condition: List of transactions is empty
+    List<Transaction> transactions = model.getTransactions();
+    assertEquals(0, transactions.size());
+
+    // Check the total cost after undoing the addition
+    double totalCost = getTotalCost();
+    assertEquals(0.00, totalCost, 0.01);
+  }
+
+
+    
 }
