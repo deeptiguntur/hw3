@@ -167,6 +167,34 @@ public class TestExample {
     assertEquals(0.00, totalCost, 0.01);
   }
 
+  @Test
+  public void testUndoDisallowed() {
+        // Pre-condition: List of transactions is empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Attempt to undo when the transactions list is empty
+        int lastIndex = model.getTransactions().size() - 1;
+        controller.undoTransaction(lastIndex);
+
+        // Post-condition: List of transactions is still empty
+        assertEquals(0, model.getTransactions().size());
+
+        // Additional check: Ensure that the UI widget is disabled or an error code is returned
+        
+        //assertFalse(view.getUndoButton().isEnabled()); // Adjust this based on your implementation
+
+        try {
+        controller.undoTransaction(lastIndex);
+        fail("Expected an exception when attempting to undo an empty list");
+        } catch (Exception e) {
+        // Handle the exception, or assert its type/message if necessary
+        assertTrue(e instanceof Exception);
+        assertEquals("Expected error message", e.getMessage());
+        }
+
+
+  }
+
 
     
 }
